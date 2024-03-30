@@ -1,0 +1,172 @@
+﻿@using BurgerApp.PL.Areas.Admin.Models.MenuViewModel
+@using BurgerApp.PL.ViewModels
+@model List<OrderDetailViewModel>
+
+@* @{
+    int index = 1;
+} *@
+@*
+    // =========================DONT DELETE PLS ====================================
+    //
+    //     var burgerList = (List<BurgerViewModel>)ViewData["Burger2"];
+    //     var selectedBurger = burgerList.FirstOrDefault(x => x.Id == detail.BurgerId);
+    //
+    // @selectedBurger
+    // =========================DONT DELETE PLS ====================================
+ *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* <table class="table table-hover">
+    <thead>
+        <tr class="align-items-center">
+            <th>#</th>
+            <th>Burger</th>
+            <th>İçecek</th>
+            <th>Cips</th>
+            <th>Adet</th>
+            <th>Toplam Fiyat</th>
+            <th>Aksiyonlar</th>
+        </tr>
+    </thead>
+    <tbody id="table-list">
+        @foreach (var detail in Model)
+        {
+            <tr>
+                <td>@(index++)</td>
+                <td>@detail.Burger.Name</td>
+                <td>@detail.Drink.Name</td>
+                <td>@detail.Cips.Name</td>
+                <td>@detail.Count</td>
+                <td>@detail.OrderDetailTotalPrice().ToString("C")</td>
+                <td>
+                    <button data-bs-target="#btn-edit-orderdetail" data-bs-toggle="modal" id="@detail.Id" class="btn btn-orderdetail-edit btn-outline-warning me-2">Düzenle</button>
+                    <button data-bs-target="#btn-delete-orderdetail" data-bs-toggle="modal" id="@detail.Id" class="btn btn-orderdetail-delete btn-outline-danger">Sil</button>
+                </td>
+            </tr>
+
+        }
+
+    </tbody>
+</table> *@
+
+@* <form id="form-add-orderdetail" asp-action="Add" method="POST">
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <td>@(index)</td>
+                <td><select name="BurgerId" class="form-select" asp-items="@(new SelectList(ViewBag.Burgers, nameof(BurgerViewModel.Id), nameof(BurgerViewModel.Name)))"></select></td>
+                <td><select name="CipsId" class="form-select" asp-items="@(new SelectList(ViewBag.Cips, nameof(CipsViewModel.Id), nameof(CipsViewModel.Name)))"></select></td>
+                <td><select name="DrinkId" class="form-select" asp-items="@(new SelectList(ViewBag.Drinks, nameof(DrinkViewModel.Id), nameof(DrinkViewModel.Name)))"></select></td>
+                <td><input name="Count" type="number" class="form-control" placeholder="Adet" /></td>
+                <td><button type="submit" id="add-orderdetail-button" class="btn btn-primary w-100">Ekle</button></td>
+                <input type="hidden" name="UserId" value="@ViewBag.UserId" />
+            </tr>
+        </tbody>
+    </table>
+</form> *@
+
+
+
+@foreach (var menu in ViewBag.Menus)
+{
+    <div class="custom-card m-auto w-50 bg-white p-2">
+        <div class="row">
+            <div class="col-2">
+                <img class="img-fluid" style="width:100%" src="https://img.freepik.com/free-psd/fresh-beef-burger-isolated-transparent-background_191095-9018.jpg?size=338&ext=jpg&ga=GA1.1.2082370165.1711065600&semt=ais" />
+            </div>
+            <div class="col-10">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4>@menu.Name</h4>
+                        <p>@menu.Description </p>
+                    </div>
+                    <div>
+                        <h4>@menu.MenuPrice().ToString("C")</h4>
+                        <button class="btn btn-primary btn-add-to-order" data-menu-id="@menu.Id">+ Ekle</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br />
+}
+
+@* <script>
+    $("#form-add-orderdetail").submit((e) => {
+        e.preventDefault();
+        var formData = new FormData($("#form-add-orderdetail")[0]);
+        $.ajax({
+            url: `@Url.Action("Add", "OrderDetail")`,
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: (data) => {
+                console.log("İstek başarıyla tamamlandı:");
+                ReInitTable();
+            },
+            error: (xhr) => {
+                console.log("İstek başarısız oldu. Hata kodu:", xhr.status);
+            }
+        });
+    });
+
+    function ReInitTable() {
+        $.ajax({
+            url: `@Url.Action("GetTableList", "OrderDetail")`,
+            method: 'GET',
+            beforeSend: () => {
+                console.log("Yenileniyor...");
+            },
+            success: (data) => {
+                $("#table-list").html(data);
+            }
+        });
+    }
+</script> *@
+
+<script>
+    $("#form-add-orderdetail").submit((e) => {
+        e.preventDefault();
+        var formData = new FormData($("#form-add-orderdetail")[0]);
+        $.ajax({
+            url: `@Url.Action("Add", "OrderDetail")`,
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: (data) => {
+                console.log("İstek başarıyla tamamlandı:");
+                ReInitTable();
+            },
+            error: (xhr) => {
+                console.log("İstek başarısız oldu. Hata kodu:", xhr.status);
+            }
+        });
+    });
+
+    function ReInitTable() {
+        $.ajax({
+            url: `@Url.Action("GetTableList", "OrderDetail")`,
+            method: 'GET',
+            beforeSend: () => {
+                console.log("Yenileniyor...");
+            },
+            success: (data) => {
+                $("#table-list").html(data);
+            }
+        });
+    }
+</script>
